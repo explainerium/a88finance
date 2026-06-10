@@ -43,9 +43,7 @@ export function AdminShell({
 
         <div className="flex min-h-screen min-w-0 flex-1 flex-col">
           <AdminTopbar user={user} onMenu={() => setDrawerOpen(true)} />
-          <main className="mx-auto w-full max-w-6xl flex-1 p-5 sm:p-8">
-            {children}
-          </main>
+          <main className="w-full flex-1 p-5 sm:p-8">{children}</main>
         </div>
       </div>
     </div>

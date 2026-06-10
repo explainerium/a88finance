@@ -152,6 +152,8 @@ export type BlogPost = {
   categoryIcon: string;
   excerpt: string;
   gradient?: "g2" | "g3";
+  coverImage?: string;
+  coverImageAlt?: string;
 };
 
 export const blogPosts: BlogPost[] = [

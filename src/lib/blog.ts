@@ -11,6 +11,8 @@ export type BlogCard = {
   categoryIcon: string;
   excerpt: string;
   gradient?: "g2" | "g3";
+  coverImage?: string;
+  coverImageAlt?: string;
 };
 
 const GRADIENTS: (undefined | "g2" | "g3")[] = [undefined, "g2", "g3"];
@@ -36,6 +38,8 @@ type PostWithCategory = {
   title: string;
   excerpt: string | null;
   content: string;
+  coverImage: string | null;
+  coverImageAlt: string | null;
   categories: { name: string }[];
 };
 
@@ -47,7 +51,24 @@ function toCard(post: PostWithCategory, index: number): BlogCard {
     categoryIcon: iconForCategory(post.categories[0]?.name),
     excerpt: post.excerpt ?? makeExcerpt(post.content),
     gradient: GRADIENTS[index % GRADIENTS.length],
+    coverImage: post.coverImage ?? undefined,
+    coverImageAlt: post.coverImageAlt ?? undefined,
   };
+}
+
+/** Categories that have at least one published post (for the blog filter). */
+export async function getBlogCategories(): Promise<
+  { name: string; slug: string }[]
+> {
+  try {
+    return await prisma.category.findMany({
+      where: { posts: { some: { published: true } } },
+      orderBy: { name: "asc" },
+      select: { name: true, slug: true },
+    });
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -83,6 +104,8 @@ export async function getPublishedPostCards(limit?: number): Promise<BlogCard[]>
         title: true,
         excerpt: true,
         content: true,
+        coverImage: true,
+        coverImageAlt: true,
         categories: { select: { name: true }, take: 1 },
       },
     });
@@ -130,6 +153,8 @@ export async function getCategoryWithPosts(slug: string) {
       title: true,
       excerpt: true,
       content: true,
+      coverImage: true,
+      coverImageAlt: true,
       categories: { select: { name: true }, take: 1 },
     },
   });
@@ -148,6 +173,8 @@ export async function getTagWithPosts(slug: string) {
       title: true,
       excerpt: true,
       content: true,
+      coverImage: true,
+      coverImageAlt: true,
       categories: { select: { name: true }, take: 1 },
     },
   });

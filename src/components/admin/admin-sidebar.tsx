@@ -1,11 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  ChevronDown,
   FileText,
   FolderTree,
   LayoutDashboard,
+  Newspaper,
   Settings,
   Tags,
   Users,
@@ -15,21 +18,137 @@ import { cn } from "@/lib/utils";
 
 type Role = "ADMIN" | "AUTHOR";
 type NavLink = { label: string; href: string; icon: LucideIcon; exact?: boolean };
+type NavGroup = { label: string; icon: LucideIcon; children: NavLink[] };
+type NavEntry = NavLink | NavGroup;
 
-function navItemsFor(role: Role): NavLink[] {
-  const base: NavLink[] = [
-    { label: "Overview", href: "/admin", icon: LayoutDashboard, exact: true },
+function isGroup(entry: NavEntry): entry is NavGroup {
+  return "children" in entry;
+}
+
+function navFor(role: Role): NavEntry[] {
+  const blogChildren: NavLink[] = [
     { label: "Posts", href: "/admin/posts", icon: FileText },
   ];
   if (role === "ADMIN") {
-    base.push(
-      { label: "Users", href: "/admin/users", icon: Users },
+    blogChildren.push(
       { label: "Categories", href: "/admin/categories", icon: FolderTree },
       { label: "Tags", href: "/admin/tags", icon: Tags },
+    );
+  }
+
+  const entries: NavEntry[] = [
+    { label: "Overview", href: "/admin", icon: LayoutDashboard, exact: true },
+    { label: "Blog", icon: Newspaper, children: blogChildren },
+  ];
+  if (role === "ADMIN") {
+    entries.push(
+      { label: "Users", href: "/admin/users", icon: Users },
       { label: "Settings", href: "/admin/settings", icon: Settings },
     );
   }
-  return base;
+  return entries;
+}
+
+function isActiveLink(item: NavLink, pathname: string) {
+  return item.exact
+    ? pathname === item.href
+    : pathname === item.href || pathname.startsWith(`${item.href}/`);
+}
+
+function NavLinkItem({
+  item,
+  pathname,
+  onNavigate,
+  nested = false,
+}: {
+  item: NavLink;
+  pathname: string;
+  onNavigate?: () => void;
+  nested?: boolean;
+}) {
+  const Icon = item.icon;
+  const active = isActiveLink(item, pathname);
+  return (
+    <Link
+      href={item.href}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+        nested && "pl-9",
+        active
+          ? "bg-brand-gold/12 font-semibold text-brand-ink"
+          : "font-medium text-brand-ink-3 hover:bg-brand-paper-2 hover:text-brand-ink",
+      )}
+    >
+      <Icon
+        className={cn(
+          "size-[18px] shrink-0 transition-colors",
+          active
+            ? "text-brand-gold-deep"
+            : "text-brand-ink-3 group-hover:text-brand-ink",
+        )}
+      />
+      {item.label}
+    </Link>
+  );
+}
+
+function NavGroupItem({
+  group,
+  pathname,
+  onNavigate,
+}: {
+  group: NavGroup;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  const Icon = group.icon;
+  const childActive = group.children.some((c) => isActiveLink(c, pathname));
+  const [open, setOpen] = useState(childActive);
+
+  // Auto-expand when navigating into one of the group's pages.
+  useEffect(() => {
+    if (childActive) setOpen(true);
+  }, [childActive]);
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className={cn(
+          "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+          childActive
+            ? "text-brand-ink"
+            : "text-brand-ink-3 hover:bg-brand-paper-2 hover:text-brand-ink",
+        )}
+      >
+        <Icon className="size-[18px] shrink-0" />
+        {group.label}
+        <ChevronDown
+          className={cn(
+            "ml-auto size-4 transition-transform",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+      {open && (
+        <div className="mt-1 space-y-1">
+          {group.children.map((c) => (
+            <NavLinkItem
+              key={c.href}
+              item={c}
+              pathname={pathname}
+              onNavigate={onNavigate}
+              nested
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 /**
@@ -44,12 +163,7 @@ export function AdminSidebar({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
-  const items = navItemsFor(role);
-
-  const isActive = (item: NavLink) =>
-    item.exact
-      ? pathname === item.href
-      : pathname === item.href || pathname.startsWith(`${item.href}/`);
+  const entries = navFor(role);
 
   return (
     <>
@@ -66,34 +180,23 @@ export function AdminSidebar({
       </div>
 
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-        {items.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onNavigate}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                active
-                  ? "bg-brand-gold/12 font-semibold text-brand-ink"
-                  : "font-medium text-brand-ink-3 hover:bg-brand-paper-2 hover:text-brand-ink",
-              )}
-            >
-              <Icon
-                className={cn(
-                  "size-[18px] shrink-0 transition-colors",
-                  active
-                    ? "text-brand-gold-deep"
-                    : "text-brand-ink-3 group-hover:text-brand-ink",
-                )}
-              />
-              {item.label}
-            </Link>
-          );
-        })}
+        {entries.map((entry) =>
+          isGroup(entry) ? (
+            <NavGroupItem
+              key={entry.label}
+              group={entry}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ) : (
+            <NavLinkItem
+              key={entry.href}
+              item={entry}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ),
+        )}
       </nav>
 
       <div className="border-t border-border px-4 py-3">

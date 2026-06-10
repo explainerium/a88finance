@@ -28,18 +28,16 @@ export const metadata: Metadata = {
   keywords: [...siteConfig.keywords],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
+  // title/description are intentionally omitted from openGraph/twitter so each
+  // page's own title + description flow into the social tags. The default
+  // social image comes from app/opengraph-image.tsx.
   openGraph: {
     type: "website",
     locale: "en_AU",
-    url: siteConfig.url,
     siteName: siteConfig.name,
-    title: siteConfig.title,
-    description: siteConfig.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.title,
-    description: siteConfig.description,
   },
   robots: {
     index: true,

@@ -4,7 +4,8 @@ import { useActionState } from "react";
 import { loginAction } from "@/lib/actions/auth";
 import { initialFormState } from "@/lib/actions/form-state";
 import { SubmitButton } from "@/components/admin/submit-button";
-import { input, label } from "@/components/admin/classes";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function LoginForm({ from }: { from: string }) {
   const [state, formAction] = useActionState(loginAction, initialFormState);
@@ -13,32 +14,26 @@ export function LoginForm({ from }: { from: string }) {
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="from" value={from} />
 
-      <div>
-        <label htmlFor="identifier" className={label}>
-          Email or username
-        </label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="identifier">Email or username</Label>
+        <Input
           id="identifier"
           name="identifier"
           type="text"
           autoComplete="username"
           required
-          className={input}
           placeholder="you@a88finance.com"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className={label}>
-          Password
-        </label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="password">Password</Label>
+        <Input
           id="password"
           name="password"
           type="password"
           autoComplete="current-password"
           required
-          className={input}
           placeholder="••••••••"
         />
       </div>
@@ -49,7 +44,10 @@ export function LoginForm({ from }: { from: string }) {
         </p>
       )}
 
-      <SubmitButton className="w-full rounded-lg bg-brand-gold px-4 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand-gold-deep hover:text-white disabled:opacity-60" pendingLabel="Signing in…">
+      <SubmitButton
+        className="w-full rounded-lg bg-brand-gold px-4 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand-gold-deep hover:text-white disabled:opacity-60"
+        pendingLabel="Signing in…"
+      >
         Sign in
       </SubmitButton>
     </form>

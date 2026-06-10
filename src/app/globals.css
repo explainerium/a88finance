@@ -180,6 +180,13 @@
     color: inherit;
     text-decoration: none;
   }
+  /* Tailwind v4 no longer sets this — make every interactive button a pointer. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  label[role="button"],
+  summary {
+    cursor: pointer;
+  }
   h1,
   h2,
   h3 {
@@ -1254,6 +1261,9 @@
     fill: none;
     stroke-width: 1.4;
   }
+  .bcard .top span {
+    z-index: 2;
+  }
   .bcard .body {
     padding: 24px;
   }
@@ -1421,11 +1431,11 @@
   .field select,
   .field textarea {
     width: 100%;
-    padding: 13px 15px;
+    padding: 15px 16px;
     border: 1px solid var(--line);
     border-radius: 11px;
     font-family: var(--body);
-    font-size: 0.95rem;
+    font-size: 1rem;
     background: var(--paper);
     color: var(--ink);
     transition: border 0.2s;
@@ -1503,21 +1513,50 @@
   .article-body > * + * {
     margin-top: 1.1em;
   }
-  .article-body h2 {
+  .article-body h1,
+  .article-body h2,
+  .article-body h3,
+  .article-body h4,
+  .article-body h5,
+  .article-body h6 {
     font-family: var(--display);
-    font-size: 1.6rem;
     font-weight: 600;
     line-height: 1.2;
+    color: var(--ink);
+  }
+  .article-body h1 {
+    font-size: 2rem;
+    margin-top: 1.6em;
+  }
+  .article-body h2 {
+    font-size: 1.6rem;
     margin-top: 1.8em;
   }
   .article-body h3 {
-    font-family: var(--display);
     font-size: 1.3rem;
-    font-weight: 600;
     margin-top: 1.5em;
   }
+  .article-body h4 {
+    font-size: 1.12rem;
+    margin-top: 1.4em;
+  }
+  .article-body h5 {
+    font-size: 1rem;
+    margin-top: 1.3em;
+  }
+  .article-body h6 {
+    font-size: 0.9rem;
+    margin-top: 1.3em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+  }
+  .article-body h1:first-child,
   .article-body h2:first-child,
-  .article-body h3:first-child {
+  .article-body h3:first-child,
+  .article-body h4:first-child,
+  .article-body h5:first-child,
+  .article-body h6:first-child {
     margin-top: 0;
   }
   .article-body p {

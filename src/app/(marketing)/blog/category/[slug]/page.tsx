@@ -4,7 +4,8 @@ import { BlogSection } from "@/components/sections/blog-section";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { JsonLd } from "@/components/shared/json-ld";
 import { breadcrumbSchema } from "@/lib/structured-data";
-import { getCategoryWithPosts } from "@/lib/blog";
+import { BlogCategoryFilter } from "@/components/sections/blog/blog-filter";
+import { getBlogCategories, getCategoryWithPosts } from "@/lib/blog";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -31,6 +32,7 @@ export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const data = await getCategoryWithPosts(slug).catch(() => null);
   if (!data) notFound();
+  const categories = await getBlogCategories();
 
   return (
     <>
@@ -50,6 +52,9 @@ export default async function CategoryPage({ params }: Props) {
         }
         posts={data.posts}
         cta={{ label: "All articles", href: "/blog" }}
+        filter={
+          <BlogCategoryFilter categories={categories} activeSlug={slug} />
+        }
       />
       <NewsletterSection />
     </>

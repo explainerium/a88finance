@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { deleteTagAction } from "@/lib/actions/taxonomy";
 import { TagCreateForm } from "@/components/admin/tag-create-form";
 import { ActionButton } from "@/components/admin/action-button";
+import { actionBtn } from "@/components/admin/action-buttons";
 import { card } from "@/components/admin/classes";
 
 export default async function AdminTagsPage() {
@@ -25,33 +26,46 @@ export default async function AdminTagsPage() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <div className={card}>
+        <div className={`${card} overflow-x-auto p-0`}>
           {tags.length === 0 ? (
-            <p className="text-sm text-brand-ink-3">No tags yet.</p>
+            <p className="p-5 text-sm text-brand-ink-3">No tags yet.</p>
           ) : (
-            <ul className="flex flex-wrap gap-2">
-              {tags.map((t) => (
-                <li
-                  key={t.id}
-                  className="flex items-center gap-2 rounded-full border border-border bg-brand-paper-2 px-3 py-1.5 text-sm text-brand-ink"
-                >
-                  <span>{t.name}</span>
-                  <span className="text-xs text-brand-ink-3">
-                    ({t._count.posts})
-                  </span>
-                  <ActionButton
-                    action={deleteTagAction}
-                    fields={{ id: t.id }}
-                    confirm={`Delete tag "${t.name}"?`}
-                    className="text-red-500 hover:text-red-700"
-                    successMessage="Tag deleted."
-                    pendingLabel="…"
-                  >
-                    ×
-                  </ActionButton>
-                </li>
-              ))}
-            </ul>
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-brand-ink-3">
+                  <th className="px-4 py-3 font-semibold">Name</th>
+                  <th className="px-4 py-3 font-semibold">Slug</th>
+                  <th className="px-4 py-3 font-semibold">Posts</th>
+                  <th className="px-4 py-3 text-right font-semibold">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {tags.map((t) => (
+                  <tr key={t.id}>
+                    <td className="px-4 py-3 font-medium text-brand-ink">
+                      {t.name}
+                    </td>
+                    <td className="px-4 py-3 text-brand-ink-3">/{t.slug}</td>
+                    <td className="px-4 py-3 text-brand-ink-3">
+                      {t._count.posts}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end">
+                        <ActionButton
+                          action={deleteTagAction}
+                          fields={{ id: t.id }}
+                          confirm={`Delete tag "${t.name}"?`}
+                          className={actionBtn.delete}
+                          successMessage="Tag deleted."
+                        >
+                          Delete
+                        </ActionButton>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
 

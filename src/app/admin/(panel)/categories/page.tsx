@@ -7,6 +7,7 @@ import {
 } from "@/lib/actions/taxonomy";
 import { CategoryForm } from "@/components/admin/category-form";
 import { ActionButton } from "@/components/admin/action-button";
+import { actionBtn } from "@/components/admin/action-buttons";
 import { card } from "@/components/admin/classes";
 
 export default async function AdminCategoriesPage() {
@@ -53,10 +54,10 @@ export default async function AdminCategoriesPage() {
                       {c._count.posts}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-3">
+                      <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/categories/${c.id}/edit`}
-                          className="text-xs font-medium text-brand-ink hover:text-brand-gold-deep"
+                          className={actionBtn.edit}
                         >
                           Edit
                         </Link>
@@ -64,7 +65,7 @@ export default async function AdminCategoriesPage() {
                           action={deleteCategoryAction}
                           fields={{ id: c.id }}
                           confirm={`Delete category "${c.name}"?`}
-                          className="text-xs font-medium text-red-600 hover:underline"
+                          className={actionBtn.delete}
                           successMessage="Category deleted."
                         >
                           Delete

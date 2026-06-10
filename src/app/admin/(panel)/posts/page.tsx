@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Plus, X } from "lucide-react";
+import Image from "next/image";
+import { Image as ImageIcon, Plus, X } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 import {
@@ -7,6 +8,7 @@ import {
   togglePublishAction,
 } from "@/lib/actions/posts";
 import { ActionButton } from "@/components/admin/action-button";
+import { actionBtn } from "@/components/admin/action-buttons";
 import { btnPrimary, card } from "@/components/admin/classes";
 
 export default async function AdminPostsPage({
@@ -98,13 +100,30 @@ export default async function AdminPostsPage({
               {posts.map((post) => (
                 <tr key={post.id} className="align-middle">
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="font-medium text-brand-ink hover:text-brand-gold-deep"
-                    >
-                      {post.title}
-                    </Link>
-                    <p className="text-xs text-brand-ink-3">/{post.slug}</p>
+                    <div className="flex items-center gap-3">
+                      {post.coverImage ? (
+                        <Image
+                          src={post.coverImage}
+                          alt=""
+                          width={56}
+                          height={40}
+                          className="h-10 w-14 shrink-0 rounded-md object-cover"
+                        />
+                      ) : (
+                        <span className="grid h-10 w-14 shrink-0 place-items-center rounded-md border border-border bg-brand-paper-2 text-brand-ink-3">
+                          <ImageIcon className="size-4" />
+                        </span>
+                      )}
+                      <div className="min-w-0">
+                        <Link
+                          href={`/admin/posts/${post.id}/edit`}
+                          className="font-medium text-brand-ink hover:text-brand-gold-deep"
+                        >
+                          {post.title}
+                        </Link>
+                        <p className="text-xs text-brand-ink-3">/{post.slug}</p>
+                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -131,7 +150,7 @@ export default async function AdminPostsPage({
                         <Link
                           href={`/blog/${post.slug}`}
                           target="_blank"
-                          className="text-xs font-medium text-brand-ink-3 hover:text-brand-gold-deep"
+                          className={actionBtn.view}
                         >
                           View
                         </Link>
@@ -139,7 +158,9 @@ export default async function AdminPostsPage({
                       <ActionButton
                         action={togglePublishAction}
                         fields={{ id: post.id }}
-                        className="text-xs font-medium text-brand-gold-deep hover:underline"
+                        className={
+                          post.published ? actionBtn.unpublish : actionBtn.publish
+                        }
                         successMessage={
                           post.published ? "Unpublished." : "Published."
                         }
@@ -148,7 +169,7 @@ export default async function AdminPostsPage({
                       </ActionButton>
                       <Link
                         href={`/admin/posts/${post.id}/edit`}
-                        className="text-xs font-medium text-brand-ink hover:text-brand-gold-deep"
+                        className={actionBtn.edit}
                       >
                         Edit
                       </Link>
@@ -156,7 +177,7 @@ export default async function AdminPostsPage({
                         action={deletePostAction}
                         fields={{ id: post.id }}
                         confirm={`Delete "${post.title}"? This can't be undone.`}
-                        className="text-xs font-medium text-red-600 hover:underline"
+                        className={actionBtn.delete}
                         successMessage="Post deleted."
                       >
                         Delete

@@ -5,7 +5,10 @@ import { toast } from "sonner";
 import { updateSettingsAction } from "@/lib/actions/settings";
 import { initialFormState } from "@/lib/actions/form-state";
 import { SubmitButton } from "@/components/admin/submit-button";
-import { card, errorText, input, label } from "@/components/admin/classes";
+import { card, errorText } from "@/components/admin/classes";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export type SettingsValues = {
   siteName: string;
@@ -36,55 +39,43 @@ export function SettingsForm({ settings }: { settings: SettingsValues }) {
         <h2 className="font-display text-base font-semibold text-brand-ink">
           General
         </h2>
-        <div>
-          <label htmlFor="siteName" className={label}>
-            Site name
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="siteName">Site name</Label>
+          <Input
             id="siteName"
             name="siteName"
             defaultValue={settings.siteName}
             required
-            className={input}
           />
           {fieldError("siteName") && (
             <p className={errorText}>{fieldError("siteName")}</p>
           )}
         </div>
-        <div>
-          <label htmlFor="siteDescription" className={label}>
-            Site description
-          </label>
-          <textarea
+        <div className="space-y-1.5">
+          <Label htmlFor="siteDescription">Site description</Label>
+          <Textarea
             id="siteDescription"
             name="siteDescription"
             defaultValue={settings.siteDescription}
             rows={3}
-            className={input}
           />
         </div>
-        <div>
-          <label htmlFor="defaultOgImage" className={label}>
-            Default OG image URL
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="defaultOgImage">Default OG image URL</Label>
+          <Input
             id="defaultOgImage"
             name="defaultOgImage"
             defaultValue={settings.defaultOgImage}
-            className={input}
             placeholder="/og-default.png"
           />
         </div>
-        <div>
-          <label htmlFor="contactEmail" className={label}>
-            Contact email
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="contactEmail">Contact email</Label>
+          <Input
             id="contactEmail"
             name="contactEmail"
             type="email"
             defaultValue={settings.contactEmail}
-            className={input}
             placeholder="info@a88finance.com"
           />
           {fieldError("contactEmail") && (
@@ -97,39 +88,30 @@ export function SettingsForm({ settings }: { settings: SettingsValues }) {
         <h2 className="font-display text-base font-semibold text-brand-ink">
           Social links
         </h2>
-        <div>
-          <label htmlFor="facebookUrl" className={label}>
-            Facebook
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="facebookUrl">Facebook</Label>
+          <Input
             id="facebookUrl"
             name="facebookUrl"
             defaultValue={settings.facebookUrl}
-            className={input}
             placeholder="https://facebook.com/…"
           />
         </div>
-        <div>
-          <label htmlFor="linkedinUrl" className={label}>
-            LinkedIn
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="linkedinUrl">LinkedIn</Label>
+          <Input
             id="linkedinUrl"
             name="linkedinUrl"
             defaultValue={settings.linkedinUrl}
-            className={input}
             placeholder="https://linkedin.com/company/…"
           />
         </div>
-        <div>
-          <label htmlFor="instagramUrl" className={label}>
-            Instagram
-          </label>
-          <input
+        <div className="space-y-1.5">
+          <Label htmlFor="instagramUrl">Instagram</Label>
+          <Input
             id="instagramUrl"
             name="instagramUrl"
             defaultValue={settings.instagramUrl}
-            className={input}
             placeholder="https://instagram.com/…"
           />
         </div>

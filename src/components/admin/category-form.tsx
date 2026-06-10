@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { type FormState, initialFormState } from "@/lib/actions/form-state";
 import { SubmitButton } from "@/components/admin/submit-button";
-import { errorText, help, input, label } from "@/components/admin/classes";
+import { errorText, help } from "@/components/admin/classes";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export type CategoryFormValues = {
   id: string;
@@ -48,45 +51,39 @@ export function CategoryForm({
     <form ref={formRef} action={formAction} className="space-y-4">
       {isEdit && <input type="hidden" name="id" value={category.id} />}
 
-      <div>
-        <label htmlFor="cat-name" className={label}>
-          Name
-        </label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="cat-name">Name</Label>
+        <Input
           id="cat-name"
           name="name"
           defaultValue={category.name}
           required
-          className={input}
           placeholder="Car Finance"
         />
         {fieldError("name") && <p className={errorText}>{fieldError("name")}</p>}
       </div>
 
-      <div>
-        <label htmlFor="cat-slug" className={label}>
-          Slug
-        </label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="cat-slug">Slug</Label>
+        <Input
           id="cat-slug"
           name="slug"
           defaultValue={category.slug}
-          className={input}
           placeholder="auto from name"
         />
         <p className={help}>Powers /blog/category/[slug].</p>
       </div>
 
-      <div>
-        <label htmlFor="cat-desc" className={label}>
-          Description <span className="font-normal normal-case">(optional)</span>
-        </label>
-        <textarea
+      <div className="space-y-1.5">
+        <Label htmlFor="cat-desc">
+          Description{" "}
+          <span className="font-normal text-muted-foreground">(optional)</span>
+        </Label>
+        <Textarea
           id="cat-desc"
           name="description"
           defaultValue={category.description}
           rows={2}
-          className={input}
         />
       </div>
 

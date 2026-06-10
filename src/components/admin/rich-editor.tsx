@@ -11,8 +11,6 @@ import {
   Bold,
   Code,
   Code2,
-  Heading2,
-  Heading3,
   Highlighter,
   Image as ImageIcon,
   Italic,
@@ -21,7 +19,6 @@ import {
   List,
   ListOrdered,
   Loader2,
-  Pilcrow,
   Quote,
   Redo2,
   Strikethrough,
@@ -87,7 +84,7 @@ export function RichEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({
-        heading: { levels: [2, 3] },
+        heading: { levels: [1, 2, 3, 4, 5, 6] },
         link: {
           openOnClick: false,
           autolink: true,
@@ -190,15 +187,35 @@ export function RichEditor({
 
         <Divider />
 
-        <ToolbarButton title="Paragraph" active={e.isActive("paragraph")} onClick={() => e.chain().focus().setParagraph().run()}>
-          <Pilcrow className="size-4" />
-        </ToolbarButton>
-        <ToolbarButton title="Heading 2" active={e.isActive("heading", { level: 2 })} onClick={() => e.chain().focus().toggleHeading({ level: 2 }).run()}>
-          <Heading2 className="size-4" />
-        </ToolbarButton>
-        <ToolbarButton title="Heading 3" active={e.isActive("heading", { level: 3 })} onClick={() => e.chain().focus().toggleHeading({ level: 3 }).run()}>
-          <Heading3 className="size-4" />
-        </ToolbarButton>
+        <select
+          title="Text style"
+          aria-label="Text style"
+          value={
+            ([1, 2, 3, 4, 5, 6].find((l) =>
+              e.isActive("heading", { level: l }),
+            )?.toString()) ?? "p"
+          }
+          onChange={(ev) => {
+            const v = ev.target.value;
+            if (v === "p") {
+              e.chain().focus().setParagraph().run();
+            } else {
+              e.chain()
+                .focus()
+                .setHeading({ level: Number(v) as 1 | 2 | 3 | 4 | 5 | 6 })
+                .run();
+            }
+          }}
+          className="h-8 rounded-md border border-input bg-white px-2 text-sm text-brand-ink outline-none transition-colors hover:bg-white focus:border-brand-gold"
+        >
+          <option value="p">Paragraph</option>
+          <option value="1">Heading 1</option>
+          <option value="2">Heading 2</option>
+          <option value="3">Heading 3</option>
+          <option value="4">Heading 4</option>
+          <option value="5">Heading 5</option>
+          <option value="6">Heading 6</option>
+        </select>
 
         <Divider />
 

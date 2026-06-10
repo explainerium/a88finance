@@ -10,6 +10,12 @@ import { ContactSection } from "@/components/sections/contact-section";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { JsonLd } from "@/components/shared/json-ld";
 import { localBusinessSchema } from "@/lib/structured-data";
+import { getPublishedPostCards } from "@/lib/blog";
+
+// Rendered per-request so the "Your Finance Guide" teaser shows live posts.
+// (DB access stays out of `next build` — the Prisma 7 query compiler crashes
+// Next's Turbopack build workers; runtime is unaffected.)
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   description:
@@ -17,7 +23,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Latest published posts; fall back to the built-in demo posts when empty.
+  const latest = await getPublishedPostCards(3);
+  const blogPosts = latest.length > 0 ? latest : undefined;
+
   return (
     <>
       <JsonLd data={localBusinessSchema} />
@@ -27,7 +37,7 @@ export default function HomePage() {
       <StorySection />
       <ProcessSection />
       <TestimonialsSection />
-      <BlogSection />
+      <BlogSection posts={blogPosts} />
       <ContactSection />
       <NewsletterSection />
     </>

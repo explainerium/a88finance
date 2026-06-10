@@ -5,7 +5,9 @@ import { toast } from "sonner";
 import { createTagAction } from "@/lib/actions/taxonomy";
 import { initialFormState } from "@/lib/actions/form-state";
 import { SubmitButton } from "@/components/admin/submit-button";
-import { errorText, input, label } from "@/components/admin/classes";
+import { errorText } from "@/components/admin/classes";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function TagCreateForm() {
   const [state, formAction] = useActionState(createTagAction, initialFormState);
@@ -23,29 +25,14 @@ export function TagCreateForm() {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-4">
-      <div>
-        <label htmlFor="tag-name" className={label}>
-          Name
-        </label>
-        <input
-          id="tag-name"
-          name="name"
-          required
-          className={input}
-          placeholder="refinancing"
-        />
+      <div className="space-y-1.5">
+        <Label htmlFor="tag-name">Name</Label>
+        <Input id="tag-name" name="name" required placeholder="refinancing" />
         {fieldError("name") && <p className={errorText}>{fieldError("name")}</p>}
       </div>
-      <div>
-        <label htmlFor="tag-slug" className={label}>
-          Slug
-        </label>
-        <input
-          id="tag-slug"
-          name="slug"
-          className={input}
-          placeholder="auto from name"
-        />
+      <div className="space-y-1.5">
+        <Label htmlFor="tag-slug">Slug</Label>
+        <Input id="tag-slug" name="slug" placeholder="auto from name" />
       </div>
       <SubmitButton>Add tag</SubmitButton>
     </form>

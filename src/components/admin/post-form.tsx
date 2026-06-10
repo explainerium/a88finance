@@ -9,14 +9,17 @@ import { slugify } from "@/lib/slug";
 import { uploadImageAction } from "@/lib/actions/upload";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { RichEditor } from "@/components/admin/rich-editor";
+import { btnGhost, card, errorText, help } from "@/components/admin/classes";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
-  btnGhost,
-  card,
-  errorText,
-  help,
-  input,
-  label,
-} from "@/components/admin/classes";
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupButton,
+} from "@/components/ui/input-group";
 
 type Option = { id: string; name: string };
 
@@ -63,12 +66,10 @@ export function PostForm({
 }) {
   const [state, formAction] = useActionState(action, initialFormState);
 
-  // Title → slug live autofill (until the slug is manually edited).
   const [title, setTitle] = useState(post.title);
   const [slug, setSlug] = useState(post.slug);
   const [slugTouched, setSlugTouched] = useState(Boolean(post.slug));
 
-  // Cover image upload.
   const [coverImage, setCoverImage] = useState(post.coverImage);
   const [coverUploading, setCoverUploading] = useState(false);
   const coverFileRef = useRef<HTMLInputElement>(null);
@@ -112,17 +113,14 @@ export function PostForm({
         {/* Main column */}
         <div className="space-y-6">
           <div className={`${card} space-y-4`}>
-            <div>
-              <label htmlFor="title" className={label}>
-                Title
-              </label>
-              <input
+            <div className="space-y-1.5">
+              <Label htmlFor="title">Title</Label>
+              <Input
                 id="title"
                 name="title"
                 value={title}
                 onChange={(ev) => onTitleChange(ev.target.value)}
                 required
-                className={`${input} text-base`}
                 placeholder="Five signs you're ready for a business loan"
               />
               {fieldError("title") && (
@@ -130,15 +128,11 @@ export function PostForm({
               )}
             </div>
 
-            <div>
-              <label htmlFor="slug" className={label}>
-                Slug
-              </label>
-              <div className="flex items-stretch overflow-hidden rounded-lg border border-border focus-within:border-brand-gold">
-                <span className="flex items-center bg-brand-paper-2 px-3 text-sm text-brand-ink-3">
-                  /blog/
-                </span>
-                <input
+            <div className="space-y-1.5">
+              <Label htmlFor="slug">Slug</Label>
+              <InputGroup>
+                <InputGroupAddon>/blog/</InputGroupAddon>
+                <InputGroupInput
                   id="slug"
                   name="slug"
                   value={slug}
@@ -146,21 +140,18 @@ export function PostForm({
                     setSlug(ev.target.value);
                     setSlugTouched(true);
                   }}
-                  className="min-w-0 flex-1 bg-white px-3 py-2 text-sm text-brand-ink outline-none"
                   placeholder="auto-generated-from-title"
                 />
-                <button
-                  type="button"
+                <InputGroupButton
                   title="Regenerate from title"
                   onClick={() => {
                     setSlug(slugify(title));
                     setSlugTouched(false);
                   }}
-                  className="flex items-center gap-1 border-l border-border px-2 text-xs text-brand-ink-3 hover:bg-brand-paper-2 hover:text-brand-ink"
                 >
-                  <RotateCcw className="size-3.5" />
-                </button>
-              </div>
+                  <RotateCcw className="size-4" />
+                </InputGroupButton>
+              </InputGroup>
               <p className={help}>
                 Auto-fills from the title until you edit it. Duplicate slugs get a
                 numeric suffix on save.
@@ -169,7 +160,7 @@ export function PostForm({
           </div>
 
           <div className={`${card} space-y-2`}>
-            <label className={label}>Content</label>
+            <Label>Content</Label>
             <RichEditor name="content" initialHTML={post.content} />
             {fieldError("content") && (
               <p className={errorText}>{fieldError("content")}</p>
@@ -183,28 +174,22 @@ export function PostForm({
             <h2 className="font-display text-base font-semibold text-brand-ink">
               SEO
             </h2>
-            <div>
-              <label htmlFor="metaTitle" className={label}>
-                Meta title
-              </label>
-              <input
+            <div className="space-y-1.5">
+              <Label htmlFor="metaTitle">Meta title</Label>
+              <Input
                 id="metaTitle"
                 name="metaTitle"
                 defaultValue={post.metaTitle}
-                className={input}
                 placeholder="Custom <title> (defaults to the post title)"
               />
             </div>
-            <div>
-              <label htmlFor="metaDescription" className={label}>
-                Meta description
-              </label>
-              <textarea
+            <div className="space-y-1.5">
+              <Label htmlFor="metaDescription">Meta description</Label>
+              <Textarea
                 id="metaDescription"
                 name="metaDescription"
                 defaultValue={post.metaDescription}
                 rows={3}
-                className={input}
                 placeholder="Used for search results and social previews (falls back to the auto excerpt)."
               />
             </div>
@@ -213,36 +198,13 @@ export function PostForm({
 
         {/* Sidebar column */}
         <div className="space-y-6">
-          <div className={`${card} space-y-4`}>
-            <label className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                name="published"
-                defaultChecked={post.published}
-                className="size-4 rounded border-border accent-brand-gold"
-              />
-              <span className="text-sm font-semibold text-brand-ink">
-                Published
-              </span>
-            </label>
-            <p className={help}>
-              Unpublished posts stay as drafts (hidden from the blog).
-            </p>
-            <div className="flex flex-col gap-2">
-              <SubmitButton>{submitLabel}</SubmitButton>
-              <Link href="/admin/posts" className={btnGhost}>
-                Cancel
-              </Link>
-            </div>
-          </div>
-
           <div className={`${card} space-y-3`}>
             <h2 className="font-display text-base font-semibold text-brand-ink">
               Cover image
             </h2>
 
             {coverImage ? (
-              <div className="group relative overflow-hidden rounded-lg border border-border">
+              <div className="group relative overflow-hidden rounded-lg border border-input">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={coverImage}
@@ -263,7 +225,7 @@ export function PostForm({
                 type="button"
                 disabled={coverUploading}
                 onClick={() => coverFileRef.current?.click()}
-                className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-brand-paper-2 text-sm text-brand-ink-3 transition-colors hover:border-brand-gold hover:text-brand-ink disabled:opacity-60"
+                className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-brand-paper-2 text-sm text-brand-ink-3 transition-colors hover:border-brand-gold hover:text-brand-ink disabled:opacity-60"
               >
                 {coverUploading ? (
                   <Loader2 className="size-5 animate-spin" />
@@ -283,19 +245,18 @@ export function PostForm({
             />
             <input type="hidden" name="coverImage" value={coverImage} />
 
-            <div>
-              <label htmlFor="coverImageAlt" className={label}>
-                Alt text
-              </label>
-              <input
+            <div className="space-y-1.5">
+              <Label htmlFor="coverImageAlt">Alt text</Label>
+              <Input
                 id="coverImageAlt"
                 name="coverImageAlt"
                 defaultValue={post.coverImageAlt}
-                className={input}
                 placeholder="Describe the image"
               />
             </div>
-            <p className={help}>Stored on Cloudinary. Alt text helps SEO &amp; accessibility.</p>
+            <p className={help}>
+              Stored on Cloudinary. Alt text helps SEO &amp; accessibility.
+            </p>
           </div>
 
           <div className={`${card} space-y-3`}>
@@ -305,18 +266,19 @@ export function PostForm({
             {categories.length === 0 ? (
               <p className={help}>No categories yet.</p>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {categories.map((c) => (
-                  <label key={c.id} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
+                  <Label
+                    key={c.id}
+                    className="gap-2.5 font-normal text-brand-ink"
+                  >
+                    <Checkbox
                       name="categoryIds"
                       value={c.id}
                       defaultChecked={post.categoryIds.includes(c.id)}
-                      className="size-4 rounded border-border accent-brand-gold"
                     />
-                    <span className="text-brand-ink">{c.name}</span>
-                  </label>
+                    {c.name}
+                  </Label>
                 ))}
               </div>
             )}
@@ -331,22 +293,34 @@ export function PostForm({
             ) : (
               <div className="flex flex-wrap gap-2">
                 {tags.map((t) => (
-                  <label
+                  <Label
                     key={t.id}
-                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-brand-ink"
+                    className="gap-1.5 rounded-full border border-input px-3 py-1 text-xs font-normal text-brand-ink"
                   >
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       name="tagIds"
                       value={t.id}
                       defaultChecked={post.tagIds.includes(t.id)}
-                      className="size-3.5 rounded border-border accent-brand-gold"
+                      className="size-3.5"
                     />
                     {t.name}
-                  </label>
+                  </Label>
                 ))}
               </div>
             )}
+          </div>
+
+          <div className={`${card} flex flex-col gap-2`}>
+            {/* Publish state is managed from the posts list; preserve it on save. */}
+            <input
+              type="hidden"
+              name="published"
+              value={post.published ? "on" : ""}
+            />
+            <SubmitButton>{submitLabel}</SubmitButton>
+            <Link href="/admin/posts" className={btnGhost}>
+              Cancel
+            </Link>
           </div>
         </div>
       </div>
