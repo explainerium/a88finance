@@ -7,7 +7,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { JsonLd } from "@/components/shared/json-ld";
 import { articleSchema, breadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/lib/site-config";
-import { getPublishedPostBySlug } from "@/lib/blog";
+import { getPublishedPostBySlug, getStaticPost } from "@/lib/blog";
 import { makeExcerpt } from "@/lib/markdown";
 
 type BlogPostPageProps = {
@@ -34,7 +34,20 @@ export async function generateMetadata({
   const post = await getPublishedPostBySlug(slug);
 
   if (!post) {
-    return { title: "Article not found", robots: { index: false } };
+    // Static demo fallback (no DB configured).
+    const sp = getStaticPost(slug);
+    if (!sp) return { title: "Article not found", robots: { index: false } };
+    return {
+      title: sp.title,
+      description: sp.excerpt,
+      alternates: { canonical: `/blog/${sp.slug}` },
+      openGraph: {
+        type: "article",
+        title: sp.title,
+        description: sp.excerpt,
+        url: `${siteConfig.url}/blog/${sp.slug}`,
+      },
+    };
   }
 
   const description =
@@ -68,7 +81,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
 
-  if (!post) notFound();
+  if (!post) {
+    // No DB post — render the static demo article if the slug matches one.
+    const sp = getStaticPost(slug);
+    if (!sp) notFound();
+    return <StaticArticle post={sp} />;
+  }
 
   const description =
     post.metaDescription || post.excerpt || makeExcerpt(post.content);
@@ -184,6 +202,73 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               ))}
             </div>
           )}
+
+          <div style={{ marginTop: "40px" }}>
+            <Link className="btn btn-ghost" href="/blog">
+              <ArrowLeft size={18} />
+              Back to blog
+            </Link>
+          </div>
+        </div>
+      </article>
+    </>
+  );
+}
+
+/** Fallback article view for the static demo posts (used when there's no DB). */
+function StaticArticle({
+  post,
+}: {
+  post: { slug: string; title: string; category: string; excerpt: string };
+}) {
+  return (
+    <>
+      <JsonLd
+        data={articleSchema({
+          title: post.title,
+          description: post.excerpt,
+          slug: post.slug,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: post.title, path: `/blog/${post.slug}` },
+        ])}
+      />
+
+      <article className="section-pad">
+        <div className="wrap">
+          <Reveal className="shead">
+            <div style={{ maxWidth: "760px" }}>
+              <span className="kicker">{post.category}</span>
+              <h1
+                style={{
+                  fontSize: "clamp(2rem,4vw,3rem)",
+                  lineHeight: 1.08,
+                  margin: "10px 0 16px",
+                }}
+              >
+                {post.title}
+              </h1>
+              <p style={{ fontSize: "1.08rem" }}>{post.excerpt}</p>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div className="article-body" style={{ maxWidth: "760px", marginTop: "28px" }}>
+              <p>
+                {post.excerpt} In this article we break the topic down into
+                clear, practical steps so you know exactly what to consider
+                before making a decision, and where A88 Finance Group can help.
+              </p>
+              <p className="text-brand-gold-deep" style={{ fontWeight: 600 }}>
+                The full article is coming soon. In the meantime, get in touch
+                and we&apos;ll walk you through your options one-on-one.
+              </p>
+            </div>
+          </Reveal>
 
           <div style={{ marginTop: "40px" }}>
             <Link className="btn btn-ghost" href="/blog">

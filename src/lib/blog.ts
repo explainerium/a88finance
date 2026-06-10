@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import { makeExcerpt } from "@/lib/markdown";
+import { blogPosts as staticPosts } from "@/lib/content";
 
 /** Card shape consumed by the existing <BlogSection> marketing component. */
 export type BlogCard = {
@@ -49,33 +50,63 @@ function toCard(post: PostWithCategory, index: number): BlogCard {
   };
 }
 
+/**
+ * Static demo posts (from content.ts) used as a fallback when the database
+ * isn't configured — so the public site stays complete on a frontend-only
+ * preview deploy with no DATABASE_URL.
+ */
+function staticCards(limit?: number): BlogCard[] {
+  const cards: BlogCard[] = staticPosts.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    category: p.category,
+    categoryIcon: p.categoryIcon,
+    excerpt: p.excerpt,
+    gradient: p.gradient,
+  }));
+  return limit ? cards.slice(0, limit) : cards;
+}
+
+export function getStaticPost(slug: string) {
+  return staticPosts.find((p) => p.slug === slug) ?? null;
+}
+
 /** Published posts as marketing cards (newest first). */
 export async function getPublishedPostCards(limit?: number): Promise<BlogCard[]> {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
-    take: limit,
-    select: {
-      slug: true,
-      title: true,
-      excerpt: true,
-      content: true,
-      categories: { select: { name: true }, take: 1 },
-    },
-  });
-  return posts.map(toCard);
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+      take: limit,
+      select: {
+        slug: true,
+        title: true,
+        excerpt: true,
+        content: true,
+        categories: { select: { name: true }, take: 1 },
+      },
+    });
+    return posts.map(toCard);
+  } catch {
+    // No database (e.g. frontend-only preview) — show the static demo posts.
+    return staticCards(limit);
+  }
 }
 
 /** Full post for the article page (only published posts are public). */
 export async function getPublishedPostBySlug(slug: string) {
-  return prisma.post.findFirst({
-    where: { slug, published: true },
-    include: {
-      author: { select: { name: true, image: true } },
-      categories: { select: { name: true, slug: true } },
-      tags: { select: { name: true, slug: true } },
-    },
-  });
+  try {
+    return await prisma.post.findFirst({
+      where: { slug, published: true },
+      include: {
+        author: { select: { name: true, image: true } },
+        categories: { select: { name: true, slug: true } },
+        tags: { select: { name: true, slug: true } },
+      },
+    });
+  } catch {
+    return null; // DB unavailable — the page falls back to the static post.
+  }
 }
 
 /** Slugs of all published posts (for generateStaticParams / sitemap). */
