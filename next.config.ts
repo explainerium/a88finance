@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   poweredByHeader: false,
   compress: true,
+  // Server Actions default to a 1MB request body — too small for image uploads.
+  // (Note: Vercel still caps a serverless request body at ~4.5MB, so keep
+  // uploaded images under ~4MB in production.)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
