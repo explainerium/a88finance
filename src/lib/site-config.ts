@@ -27,6 +27,10 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/company/a88finance",
     instagram: "https://instagram.com/a88finance",
   },
+  // Public Google Business profile (reviews tab) — used for the "Read all
+  // reviews on Google" link in the reviews section.
+  googleReviewsUrl:
+    "https://www.google.com/maps/place/A88+Finance+Group/@-32.205415,136.1073692,8856957m/data=!3m1!1e3!4m8!3m7!1s0xe61571ab703c573:0x4df2ccc07bffb50d!9m1!1b1",
   hours: [
     { day: "Monday", time: "09:30 - 17:00" },
     { day: "Tuesday", time: "09:30 - 17:00" },

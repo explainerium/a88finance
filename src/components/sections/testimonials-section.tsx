@@ -1,21 +1,38 @@
-"use client";
+import { getReviews } from "@/lib/google-reviews";
+import { ReviewsSlider } from "@/components/sections/reviews-slider";
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { testimonials } from "@/lib/content";
-import { cn } from "@/lib/utils";
+function GoogleG() {
+  return (
+    <svg viewBox="0 0 48 48" width="26" height="26" aria-hidden role="img">
+      <path
+        fill="#4285F4"
+        d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.99 21.99 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"
+      />
+      <path
+        fill="#EA4335"
+        d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"
+      />
+    </svg>
+  );
+}
 
-export function TestimonialsSection() {
-  const [index, setIndex] = useState(0);
-  // Show 3 at a time on desktop; clamp the furthest start position.
-  const maxIndex = Math.max(0, testimonials.length - 3);
-  const step = 33.333;
+export async function TestimonialsSection() {
+  const data = await getReviews();
+  const rating = (data.rating ?? 5).toFixed(1);
 
   return (
     <section className="tst section-pad">
       <div className="wrap">
         <div className="shead">
-          <span className="kicker">Testimonials</span>
+          <span className="kicker">Google Reviews</span>
           <h2>Trusted by Clients Nationwide</h2>
           <p>
             See how Australians from all backgrounds have achieved their goals
@@ -23,45 +40,32 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="tst-viewport">
-          <div
-            className="tst-track"
-            style={{ transform: `translateX(-${index * step}%)` }}
-          >
-            {testimonials.map((t) => (
-              <article className="tcard" key={t.name}>
-                <div className="stars" aria-label="5 out of 5 stars">
-                  ★★★★★
-                </div>
-                <p>{t.quote}</p>
-                <div className="who">
-                  <span className={cn("tav", t.gold && "o")}>{t.initials}</span>
-                  <div>
-                    <b>{t.name}</b>
-                    <small>Verified client</small>
-                  </div>
-                </div>
-              </article>
-            ))}
+        <div className="g-review-bar">
+          <GoogleG />
+          <div className="g-review-meta">
+            <div className="g-review-score">
+              <strong>{rating}</strong>
+              <span className="stars" aria-hidden>
+                ★★★★★
+              </span>
+            </div>
+            <span className="g-review-count">
+              {data.total
+                ? `Based on ${data.total} Google reviews`
+                : "Reviews from Google"}
+            </span>
           </div>
+          <a
+            className="btn btn-ghost g-review-cta"
+            href={data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read all reviews on Google
+          </a>
         </div>
 
-        <div className="tst-nav">
-          <button
-            aria-label="Previous testimonials"
-            onClick={() => setIndex((i) => Math.max(0, i - 1))}
-            disabled={index === 0}
-          >
-            <ChevronLeft aria-hidden />
-          </button>
-          <button
-            aria-label="Next testimonials"
-            onClick={() => setIndex((i) => Math.min(maxIndex, i + 1))}
-            disabled={index >= maxIndex}
-          >
-            <ChevronRight aria-hidden />
-          </button>
-        </div>
+        <ReviewsSlider reviews={data.reviews} />
       </div>
     </section>
   );

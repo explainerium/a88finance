@@ -27,8 +27,8 @@ const tagInput = z.object({
 
 function revalidateBlogTaxonomy() {
   revalidatePath("/blog");
-  revalidatePath("/admin/categories");
-  revalidatePath("/admin/tags");
+  revalidatePath("/dashboard/categories");
+  revalidatePath("/dashboard/tags");
 }
 
 // ── Categories ──────────────────────────────────────────────────────────────

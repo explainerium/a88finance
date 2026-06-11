@@ -42,11 +42,11 @@ export async function loginAction(
   await createSession({ id: user.id, email: user.email, role: user.role });
 
   // Only allow internal redirect targets.
-  const target = from.startsWith("/admin") ? from : "/admin";
+  const target = from.startsWith("/dashboard") ? from : "/dashboard";
   redirect(target);
 }
 
 export async function logoutAction(): Promise<void> {
   await destroySession();
-  redirect("/admin/login");
+  redirect("/dashboard/login");
 }

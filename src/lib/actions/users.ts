@@ -93,8 +93,8 @@ export async function createUserAction(
     return { ok: false, error: "Could not create the user." };
   }
 
-  revalidatePath("/admin/users");
-  redirect("/admin/users");
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
 }
 
 export async function updateUserAction(
@@ -160,8 +160,8 @@ export async function updateUserAction(
   }
 
   void admin;
-  revalidatePath("/admin/users");
-  redirect("/admin/users");
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
 }
 
 /**
@@ -210,7 +210,7 @@ export async function deleteUserAction(
     return { ok: false, error: "Could not delete the user." };
   }
 
-  revalidatePath("/admin/users");
-  revalidatePath("/admin/posts");
+  revalidatePath("/dashboard/users");
+  revalidatePath("/dashboard/posts");
   return { ok: true };
 }

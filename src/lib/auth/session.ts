@@ -61,14 +61,14 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 /** Require any authenticated user, or redirect to the login page. */
 export async function requireUser(): Promise<User> {
   const user = await getCurrentUser();
-  if (!user) redirect("/admin/login");
+  if (!user) redirect("/dashboard/login");
   return user;
 }
 
 /** Require an ADMIN, or redirect (to login if anon, to dashboard if author). */
 export async function requireAdmin(): Promise<User> {
   const user = await getCurrentUser();
-  if (!user) redirect("/admin/login");
-  if (user.role !== "ADMIN") redirect("/admin");
+  if (!user) redirect("/dashboard/login");
+  if (user.role !== "ADMIN") redirect("/dashboard");
   return user;
 }

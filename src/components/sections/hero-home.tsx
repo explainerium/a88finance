@@ -2,8 +2,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { Layers, Zap } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
+import { siteConfig } from "@/lib/site-config";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
-const avatars = ["MS", "LW", "NP", "LT"];
+const reviewAvatars = [
+  "https://lh3.googleusercontent.com/a-/ALV-UjUMMHGWvxqqAg0Hhq8XO9qlMT6tNqd60EykVMwuxg40EeZqFDrZSg=w36-h36-p-rp-mo-br100",
+  "https://lh3.googleusercontent.com/a-/ALV-UjVJRxdCJXcgnf5wdZE4zPILpjwTvShz7nb49cySF83fQSEKJehp=w36-h36-p-rp-mo-ba12-br100",
+  "https://lh3.googleusercontent.com/a-/ALV-UjVbifXrU5F7l1T7kPmgPgYjU0HIB9X_nJwVEY7LL8DQ9QyxWUYS=w36-h36-p-rp-mo-br100",
+  "https://lh3.googleusercontent.com/a-/ALV-UjUGSyaDOvEyYlIR0hoGpGuuAinUj6XambDTuEQI4lSJIlOPpmPS=w36-h36-p-rp-mo-br100",
+];
 
 export function HeroHome() {
   return (
@@ -27,19 +39,30 @@ export function HeroHome() {
               Book a Call
             </Link>
           </div>
-          <div className="trust-row">
-            <div className="avs">
-              {avatars.map((a) => (
-                <span key={a}>{a}</span>
+          <a
+            className="trust-row"
+            href={siteConfig.googleReviewsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Read our reviews on Google Maps"
+          >
+            <AvatarGroup>
+              {reviewAvatars.map((src, i) => (
+                <Avatar key={i} className="size-9 ring-2 ring-brand-paper">
+                  <AvatarImage src={src} alt="" />
+                  <AvatarFallback className="bg-brand-ink-3 text-brand-gold-soft">
+                    ★
+                  </AvatarFallback>
+                </Avatar>
               ))}
-            </div>
+            </AvatarGroup>
             <div>
               <div className="stars" aria-hidden>
                 ★★★★★
               </div>
               Trusted by clients nationwide
             </div>
-          </div>
+          </a>
         </Reveal>
 
         <Reveal className="hero-visual" delay={0.1}>

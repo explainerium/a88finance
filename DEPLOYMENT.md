@@ -11,7 +11,7 @@ environment variables at all.** The app degrades gracefully:
 
 - Marketing pages (home, about, services, contact, …) are fully static.
 - The blog falls back to the built-in demo posts when there's no database.
-- `/admin` simply redirects to a login screen (the dashboard isn't reachable
+- `/dashboard` simply redirects to a login screen (the dashboard isn't reachable
   without a DB, and it's noindexed) — the client won't stumble into it.
 
 Just push to Git, import to Vercel, and deploy. Optionally set
@@ -98,9 +98,9 @@ secrets or build artifacts get committed.
 
 - The admin account is seeded automatically from `ADMIN_EMAIL` / `ADMIN_PASSWORD`
   on first server start.
-- Sign in at **`/admin/login`**.
+- Sign in at **`/dashboard/login`**.
 - Change the admin password from **Admin → Users → (your account) → Edit**.
-- `/admin` and `/api` are disallowed in `robots.txt`; the admin is also noindexed.
+- `/dashboard` and `/api` are disallowed in `robots.txt`; the admin is also noindexed.
 
 ## Notes / gotchas
 

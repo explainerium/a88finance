@@ -64,7 +64,7 @@ export async function updateSettingsAction(
     return { ok: false, error: "Could not save settings." };
   }
 
-  revalidatePath("/admin/settings");
+  revalidatePath("/dashboard/settings");
   revalidatePath("/", "layout");
   return { ok: true };
 }

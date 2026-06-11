@@ -48,7 +48,7 @@ function revalidatePostPaths(slug: string) {
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
   revalidatePath("/sitemap.xml");
-  revalidatePath("/admin/posts");
+  revalidatePath("/dashboard/posts");
 }
 
 export async function createPostAction(
@@ -96,7 +96,7 @@ export async function createPostAction(
   }
 
   revalidatePostPaths(createdSlug);
-  redirect("/admin/posts");
+  redirect("/dashboard/posts");
 }
 
 export async function updatePostAction(
@@ -164,7 +164,7 @@ export async function updatePostAction(
   // Revalidate both the old and new slug paths in case the slug changed.
   revalidatePostPaths(existing.slug);
   if (finalSlug !== existing.slug) revalidatePath(`/blog/${finalSlug}`);
-  redirect("/admin/posts");
+  redirect("/dashboard/posts");
 }
 
 export async function deletePostAction(
