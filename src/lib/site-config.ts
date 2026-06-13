@@ -86,7 +86,8 @@ export const navItems: NavItem[] = [
       },
     ],
   },
-  { label: "Blog", href: "/blog" },
+  // Blog hidden for now (kept as draft, not live):
+  // { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

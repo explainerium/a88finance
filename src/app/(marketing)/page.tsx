@@ -5,12 +5,13 @@ import { ServicesSection } from "@/components/sections/services-section";
 import { StorySection } from "@/components/sections/story-section";
 import { ProcessSection } from "@/components/sections/process-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
-import { BlogSection } from "@/components/sections/blog-section";
+// Blog hidden for now (kept as draft, not live). Restore with the lines below.
+// import { BlogSection } from "@/components/sections/blog-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { JsonLd } from "@/components/shared/json-ld";
 import { localBusinessSchema } from "@/lib/structured-data";
-import { getPublishedPostCards } from "@/lib/blog";
+// import { getPublishedPostCards } from "@/lib/blog";
 
 // Rendered per-request so the "Your Finance Guide" teaser shows live posts.
 // (DB access stays out of `next build` — the Prisma 7 query compiler crashes
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  // Latest published posts; fall back to the built-in demo posts when empty.
-  const latest = await getPublishedPostCards(3);
-  const blogPosts = latest.length > 0 ? latest : undefined;
+  // Blog hidden for now (kept as draft, not live):
+  // const latest = await getPublishedPostCards(3);
+  // const blogPosts = latest.length > 0 ? latest : undefined;
 
   return (
     <>
@@ -37,7 +38,7 @@ export default async function HomePage() {
       <StorySection />
       <ProcessSection />
       <TestimonialsSection />
-      <BlogSection posts={blogPosts} />
+      {/* <BlogSection posts={blogPosts} /> */}
       <ContactSection />
       <NewsletterSection />
     </>

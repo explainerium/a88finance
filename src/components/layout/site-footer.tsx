@@ -12,7 +12,8 @@ const quickLinks = [
 	{ label: "Home", href: "/" },
 	{ label: "About", href: "/about" },
 	{ label: "Services", href: "/services" },
-	{ label: "Blog", href: "/blog" },
+	// Blog hidden for now (kept as draft, not live):
+	// { label: "Blog", href: "/blog" },
 	{ label: "Apply for Finance", href: "/apply" },
 	{ label: "Contact", href: "/contact" },
 	{ label: "Privacy Policy", href: "/privacy" },
