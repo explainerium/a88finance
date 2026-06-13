@@ -71,19 +71,19 @@ secrets or build artifacts get committed.
 
 ## 5. Environment variables
 
-| Variable                 | Required        | Notes                                                        |
-| ------------------------ | --------------- | ------------------------------------------------------------ |
-| `DATABASE_URL`           | ✅ yes          | Neon **pooled** Postgres URL (`?sslmode=require`)            |
-| `AUTH_SECRET`            | ✅ yes          | Session JWT secret. Generate: `openssl rand -base64 32`      |
-| `ADMIN_EMAIL`            | ✅ yes          | Seeded admin login email                                     |
-| `ADMIN_PASSWORD`         | ✅ yes          | Seeded admin password (used only on first creation)          |
-| `NEXT_PUBLIC_SITE_URL`   | ✅ yes          | Your deployed URL, e.g. `https://a88finance.vercel.app`      |
-| `CLOUDINARY_CLOUD_NAME`  | for image uploads | From the Cloudinary dashboard                              |
-| `CLOUDINARY_API_KEY`     | for image uploads |                                                            |
-| `CLOUDINARY_API_SECRET`  | for image uploads |                                                            |
-| `RESEND_API_KEY`         | for form emails | From Resend                                                  |
-| `RESEND_FROM_EMAIL`      | for form emails | Verified sender, e.g. `A88 Finance <noreply@yourdomain>`     |
-| `LEAD_INBOX_EMAIL`       | for form emails | Inbox that receives enquiries                                |
+| Variable                | Required          | Notes                                                    |
+| ----------------------- | ----------------- | -------------------------------------------------------- |
+| `DATABASE_URL`          | ✅ yes            | Neon **pooled** Postgres URL (`?sslmode=require`)        |
+| `AUTH_SECRET`           | ✅ yes            | Session JWT secret. Generate: `openssl rand -base64 32`  |
+| `ADMIN_EMAIL`           | ✅ yes            | Seeded admin login email                                 |
+| `ADMIN_PASSWORD`        | ✅ yes            | Seeded admin password (used only on first creation)      |
+| `NEXT_PUBLIC_SITE_URL`  | ✅ yes            | Your deployed URL, e.g. `https://a88finance.vercel.app`  |
+| `CLOUDINARY_CLOUD_NAME` | for image uploads | From the Cloudinary dashboard                            |
+| `CLOUDINARY_API_KEY`    | for image uploads |                                                          |
+| `CLOUDINARY_API_SECRET` | for image uploads |                                                          |
+| `RESEND_API_KEY`        | for form emails   | From Resend                                              |
+| `RESEND_FROM_EMAIL`     | for form emails   | Verified sender, e.g. `A88 Finance <noreply@yourdomain>` |
+| `LEAD_INBOX_EMAIL`      | for form emails   | Inbox that receives enquiries                            |
 
 > **Set every variable for all environments** (toggle Production, Preview, and
 > Development when adding each one in Vercel). If `DATABASE_URL` is missing from
@@ -105,8 +105,8 @@ secrets or build artifacts get committed.
 ## Notes / gotchas
 
 - **No Prisma engine binaries.** Prisma 7 uses a driver adapter (`@prisma/adapter-pg`)
-  + a WASM query compiler, so nothing platform-specific needs configuring for
-  Vercel's Linux runtime.
+  - a WASM query compiler, so nothing platform-specific needs configuring for
+    Vercel's Linux runtime.
 - **Blog data is fetched at runtime**, not at build (Prisma 7's query compiler
   can crash Next's build workers during static prerender). The blog index and
   sitemap are `force-dynamic`; individual posts/category/tag pages are on-demand

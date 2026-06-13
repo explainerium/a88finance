@@ -1174,6 +1174,7 @@
   }
   .tst-track {
     display: flex;
+    align-items: stretch;
     gap: 24px;
     margin-top: 50px;
     transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -1185,6 +1186,8 @@
     padding: 32px;
     min-width: calc(33.333% - 16px);
     flex: 0 0 calc(33.333% - 16px);
+    display: flex;
+    flex-direction: column;
   }
   .tcard .stars {
     font-size: 1rem;
@@ -1193,12 +1196,28 @@
   .tcard p {
     color: #dbe2ee;
     font-size: 0.97rem;
-    margin-bottom: 22px;
+    margin-bottom: 14px;
+  }
+  .tcard .see-more {
+    display: inline;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .tcard .see-more:hover {
+    text-decoration: underline;
   }
   .tcard .who {
     display: flex;
     align-items: center;
     gap: 14px;
+    margin-top: auto;
   }
   .tcard .who img {
     width: 50px;
@@ -1225,6 +1244,10 @@
     background: var(--gold);
     color: var(--ink);
     border-color: #fff;
+  }
+  .tcard .who img.tav {
+    object-fit: cover;
+    overflow: hidden;
   }
   .tcard .who b {
     font-family: var(--body);

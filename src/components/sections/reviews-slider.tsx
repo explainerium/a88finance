@@ -5,6 +5,34 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Review } from "@/lib/google-reviews";
 
+/** Reviews longer than this many words are clamped behind a "See more" toggle. */
+const WORD_LIMIT = 38;
+
+function ReviewText({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const words = text.split(/\s+/);
+  const isLong = words.length > WORD_LIMIT;
+
+  if (!isLong) return <p>{text}</p>;
+
+  const shown = expanded
+    ? text + " "
+    : words.slice(0, WORD_LIMIT).join(" ") + "… ";
+
+  return (
+    <p>
+      {shown}
+      <button
+        type="button"
+        className="see-more"
+        onClick={() => setExpanded((v) => !v)}
+      >
+        {expanded ? "See less" : "See more"}
+      </button>
+    </p>
+  );
+}
+
 function Stars({ rating }: { rating: number }) {
   const full = Math.round(rating);
   return (
@@ -31,9 +59,22 @@ export function ReviewsSlider({ reviews }: { reviews: Review[] }) {
           {reviews.map((r, i) => (
             <article className="tcard" key={`${r.author}-${i}`}>
               <Stars rating={r.rating} />
-              <p>{r.text}</p>
+              <ReviewText text={r.text} />
               <div className="who">
-                <span className={cn("tav", r.gold && "o")}>{r.initials}</span>
+                {r.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className={cn("tav", r.gold && "o")}
+                    src={r.image}
+                    alt={r.author}
+                    width={50}
+                    height={50}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <span className={cn("tav", r.gold && "o")}>{r.initials}</span>
+                )}
                 <div>
                   <b>{r.author}</b>
                   <small>

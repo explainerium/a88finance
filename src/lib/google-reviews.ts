@@ -10,6 +10,8 @@ export type Review = {
   text: string;
   relativeTime?: string;
   gold?: boolean;
+  /** Profile photo URL; renders an avatar image, else falls back to initials. */
+  image?: string;
 };
 
 export type ReviewsData = {
@@ -34,9 +36,10 @@ const curated: ReviewsData = {
   reviews: testimonials.map((t) => ({
     author: t.name,
     initials: t.initials,
-    rating: 5,
+    rating: t.rating ?? 5,
     text: t.quote,
     gold: t.gold,
+    image: t.image,
   })),
   source: "curated",
 };
@@ -47,7 +50,7 @@ type GoogleReview = {
   text?: { text?: string };
   originalText?: { text?: string };
   relativePublishTimeDescription?: string;
-  authorAttribution?: { displayName?: string };
+  authorAttribution?: { displayName?: string; photoUri?: string };
 };
 type GooglePlace = {
   rating?: number;
@@ -81,6 +84,7 @@ const fetchFromGoogle = unstable_cache(
             rating: r.rating ?? 5,
             text: r.text?.text ?? r.originalText?.text ?? "",
             relativeTime: r.relativePublishTimeDescription,
+            image: r.authorAttribution?.photoUri,
           };
         })
         .filter((r) => r.text.length > 0);
