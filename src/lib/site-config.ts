@@ -20,7 +20,7 @@ export const siteConfig = {
     email: "info@a88finance.com",
     emailHref: "mailto:info@a88finance.com",
     addressMain: "Office 3752, 470 St Kilda Road, Melbourne, VIC 3004",
-    addressSecondary: "Thornhill Park VIC 3335",
+    addressSecondary: "52 Stockport Crescent, Thornhill Park VIC 3335",
   },
   socials: {
     facebook: "https://facebook.com/a88finance",

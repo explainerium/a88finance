@@ -22,10 +22,10 @@ export const localBusinessSchema: Record<string, unknown> = {
   image: `${url}/logo.svg`,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Office 3752, 470 St Kilda Road",
-    addressLocality: "Melbourne",
+    streetAddress: "52 Stockport Crescent",
+    addressLocality: "Thornhill Park",
     addressRegion: "VIC",
-    postalCode: "3004",
+    postalCode: "3335",
     addressCountry: "AU",
   },
   areaServed: "AU",

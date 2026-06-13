@@ -68,8 +68,8 @@ export function HeroHome() {
         <Reveal className="hero-visual" delay={0.1}>
           <div className="hero-blob">
             <Image
-              src="/home/finance-advisor.webp"
-              alt="A88 Finance Group finance advisor"
+              src="/home/hero-fleet.jpg"
+              alt="Truck, van, and car finance with A88 Finance Group"
               fill
               sizes="(max-width: 980px) 100vw, 460px"
               className="hero-blob-img"
