@@ -20,7 +20,7 @@ const features: Feature[] = [
   },
   {
     icon: <path d="M3 21h18M5 21V10M19 21V10M5 10l7-5 7 5M9 21v-6h6v6" />,
-    title: "Access to 25+ lenders",
+    title: "Access to 35+ lenders",
     body: "We compare a wide panel of lenders to find the option that genuinely fits your situation.",
   },
   {

@@ -26,9 +26,9 @@ export const services: Service[] = [
 		href: "/services/business-loans",
 	},
 	{
-		title: "Personal Loans",
+		title: "Personal Loans and Debt Consolidation",
 		description:
-			"Simple personal loans for weddings, renovations, holidays, or when you just need extra cash.",
+			"Simple personal loans for weddings, renovations, holidays, debt consolidation, or when you just need extra cash.",
 		icon: "user",
 		href: "/services/personal-loans",
 	},
@@ -39,10 +39,10 @@ export const services: Service[] = [
 		icon: "shield",
 	},
 	{
-		title: "Car & Motorbike Loans",
+		title: "Truck Loans",
 		description:
-			"Fast, flexible loans for new or used cars and motorbikes, with simple pre-approvals and competitive rates.",
-		icon: "bike",
+			"Fast, flexible finance for new or used trucks, with simple pre-approvals and competitive rates to keep your business moving.",
+		icon: "truck",
 	},
 	{
 		title: "Jetski, Boat & Caravan Loans",
@@ -239,5 +239,5 @@ export const homeStats = [
 	{ value: "20+", label: "Years Experience" },
 	{ value: "Fast", label: "Pre-Approvals" },
 	{ value: "1:1", label: "Personal Support" },
-	{ value: "25+", label: "Lenders" },
+	{ value: "35+", label: "Lenders" },
 ]

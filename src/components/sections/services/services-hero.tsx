@@ -11,7 +11,7 @@ export function ServicesHero() {
         <h1>Finance solutions for every situation</h1>
         <p>
           From cars and personal loans to business and specialty finance, we
-          compare more than 25 lenders to match you with the right option, fast.
+          compare more than 35 lenders to match you with the right option, fast.
         </p>
       </div>
     </section>

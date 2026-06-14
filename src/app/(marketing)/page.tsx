@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   description:
-    "A88 Finance Group helps everyday Australians with personal, business, and car loans. Compare 25+ lenders with fast pre-approvals and honest, no-judgment guidance.",
+    "A88 Finance Group helps everyday Australians with personal, business, and car loans. Compare 35+ lenders with fast pre-approvals and honest, no-judgment guidance.",
   alternates: { canonical: "/" },
 };
 

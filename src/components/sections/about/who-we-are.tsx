@@ -14,7 +14,7 @@ export function WhoWeAre() {
           style={{ gridTemplateColumns: "1fr 1fr" }}
         >
           <Reveal>
-            <span className="kicker">Who we are</span>
+            <span className="kicker">Our approach</span>
             <h2
               style={{
                 fontSize: "clamp(1.8rem,3vw,2.5rem)",
@@ -29,7 +29,7 @@ export function WhoWeAre() {
               you, then do the legwork of comparing lenders so you do not have to.
             </p>
             <p className="mb-[14px]" style={{ color: "var(--muted)" }}>
-              With access to more than 25 lenders, we match you with options built
+              With access to more than 35 lenders, we match you with options built
               around your real situation, whether you are a family upgrading the
               car, someone building credit in a new country, or a business owner
               who needs finance that moves at your pace.

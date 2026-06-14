@@ -81,7 +81,7 @@ export function HeroHome() {
               <Layers aria-hidden />
             </span>
             <div>
-              <b>25+</b>
+              <b>35+</b>
               <small>Lenders compared</small>
             </div>
           </div>

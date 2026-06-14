@@ -7,19 +7,19 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
-  title: "Personal Loans",
+  title: "Personal Loans and Debt Consolidation",
   description:
-    "Simple personal loans for weddings, renovations, holidays, debt consolidation and more. Compare 25+ lenders for competitive rates and repayments that fit your budget.",
+    "Simple personal loans for weddings, renovations, holidays, debt consolidation and more. Compare 35+ lenders for competitive rates and repayments that fit your budget.",
   alternates: { canonical: "/services/personal-loans" },
 };
 
 const content: ServiceDetailContent = {
-  crumbLabel: "Personal Loans",
-  heroTitle: "Personal Loans",
+  crumbLabel: "Personal Loans & Debt Consolidation",
+  heroTitle: "Personal Loans and Debt Consolidation",
   heroIntro:
     "Simple personal loans for the moments that matter, from weddings and renovations to holidays or simply needing a little extra.",
   kicker: "Personal Loans",
-  introHeading: "Personal Loans",
+  introHeading: "Personal Loans and Debt Consolidation",
   introParagraphs: [
     "Whatever you are planning, a personal loan can give you the breathing room to do it on your terms. We compare lenders to find competitive rates and repayments that fit your budget.",
     "Clear guidance, honest advice, and a quick, straightforward process from enquiry to settlement.",

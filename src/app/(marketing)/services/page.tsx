@@ -10,7 +10,7 @@ import { breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Explore A88 Finance Group's loan solutions: car, personal, business, specialty, low-doc and bad-credit finance. We compare 25+ lenders for fast, fair pre-approvals.",
+    "Explore A88 Finance Group's loan solutions: car, personal, business, specialty, low-doc and bad-credit finance. We compare 35+ lenders for fast, fair pre-approvals.",
   alternates: { canonical: "/services" },
 };
 

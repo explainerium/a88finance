@@ -9,7 +9,7 @@ import { ApplyBanner } from "@/components/sections/apply/apply-banner";
 export const metadata: Metadata = {
   title: "Apply for Finance",
   description:
-    "Apply for car, personal, business or specialty finance online in minutes. Share a few details and A88 Finance compares 25+ lenders — no obligation, reply within one business day.",
+    "Apply for car, personal, business or specialty finance online in minutes. Share a few details and A88 Finance compares 35+ lenders — no obligation, reply within one business day.",
   alternates: { canonical: "/apply" },
 };
 

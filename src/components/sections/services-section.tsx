@@ -15,7 +15,7 @@ type ServicesSectionProps = {
 export function ServicesSection({
   kicker = "Services",
   title = "Smart Finance Starts Here",
-  intro = "With access to over 25 lenders, I compare your choices and match you with the finance solution that works best for your situation.",
+  intro = "With access to over 35 lenders, I compare your choices and match you with the finance solution that works best for your situation.",
   items = defaultServices,
   cta = { label: "All Services", href: "/services" },
 }: ServicesSectionProps) {
